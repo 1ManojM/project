@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h4 class="mb-3">Dashboard</h4>
+<div class="row g-3 mb-4">
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <div class="text-muted">Projects</div><div class="fs-3">{{ kpis.projects }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <div class="text-muted">Open Tasks</div><div class="fs-3">{{ kpis.tasks_open }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <div class="text-muted">Done Tasks</div><div class="fs-3">{{ kpis.tasks_done }}</div>
+  </div></div></div>
+  <div class="col-md-3"><div class="card shadow-sm"><div class="card-body">
+    <div class="text-muted">Total Hours</div><div class="fs-3">{{ kpis.hours_total }}</div>
+  </div></div></div>
+</div>
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card shadow-sm"><div class="card-header">Recent Projects</div><div class="card-body p-0">
+      <table class="table mb-0 table-striped">
+        <thead><tr><th>Name</th><th>Client</th><th>Status</th></tr></thead>
+        <tbody>
+          {% for p in projects %}
+            <tr><td><a href="{% url 'projects:detail' p.id %}">{{ p.name }}</a></td><td>{{ p.client.name }}</td><td><span class="badge bg-info">{{ p.get_status_display }}</span></td></tr>
+          {% empty %}<tr><td colspan="3" class="text-center p-3">No projects</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm"><div class="card-header">Recent Tasks</div><div class="card-body p-0">
+      <table class="table mb-0 table-striped">
+        <thead><tr><th>Title</th><th>Project</th><th>Status</th></tr></thead>
+        <tbody>
+          {% for t in tasks %}
+            <tr><td><a href="{% url 'tasks:detail' t.id %}">{{ t.title }}</a></td><td>{{ t.project.name }}</td><td><span class="badge bg-secondary">{{ t.get_status_display }}</span></td></tr>
+          {% empty %}<tr><td colspan="3" class="text-center p-3">No tasks</td></tr>{% endfor %}
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+</div>
+{% endblock %}
